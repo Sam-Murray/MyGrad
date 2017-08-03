@@ -101,4 +101,39 @@ def softmax_crossentropy(x, y_true):
         The average softmax loss"""
     return Tensor._op(SoftmaxCrossEntropy, x, y_true)
 
-
+class MeanSquaredError(Operation):
+    """Given a predicted output value and true value,
+        Will return the mean squared error of the two"""
+    def __call__(self, x, y_true):
+        """ Params
+            ------
+            x: pygrad.tensor shape: (N,), the predicted values of a sequence
+            y: np.array() shape:(N,), the truth values of the sequence
+            Returns
+            -------
+            Mean squared error"""
+  
+        self.a = x
+        self.error=np.copy(x.data)-y_true.data
+        
+        self.length=len(self.error)
+        print(self.length)
+        print(self.error)
+        loss=np.sum((self.error**2)/self.length)
+        return loss
+    def backward_a(self,grad):
+            print(grad)
+            self.a.backward((grad*self.error*2)/self.length)
+            
+            
+def mean_squared_error(x,y_true):
+    """ Params
+        ------
+        x: pygrad.tensor shape: (N,), the predicted values of a sequence
+        y: np.array() shape:(N,), the truth values of the sequence
+        Returns
+        -------
+        Mean squared error"""
+    return Tensor._op(MeanSquaredError,x,y_true)
+    
+            
