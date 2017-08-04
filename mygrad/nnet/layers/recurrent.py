@@ -90,9 +90,9 @@ class RecurrentUnit(Operation):
         firstguy=True
         for attr in self.__dict__:
             var = getattr(self, attr)
-            if hasattr(var, grad):
+            if hasattr(var, "grad"):
                     var.grad=None
-            if hasattr(var, _ops):
+            if hasattr(var, "_ops"):
                     var._ops = []
         
         

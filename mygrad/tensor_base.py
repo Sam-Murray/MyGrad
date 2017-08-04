@@ -144,7 +144,7 @@ class Tensor:
     def no_recursion_null_grad(self):
         self.grad=None
         self._ops = []
-        if (self._creator is not None and hasattr(self._creator,no_recursion_null_grad())):
+        if (self._creator is not None and hasattr(self._creator,"no_recursion_null_grad")):
             self._creator.no_recursion_null_grad()
         
         
