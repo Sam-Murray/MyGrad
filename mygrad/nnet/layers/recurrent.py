@@ -86,7 +86,16 @@ class RecurrentUnit(Operation):
             self.U.backward(np.einsum("ijk, ijl -> kl", self._input_seq.data, dLt_dft[1:]))
         if not self.W.constant:
             self.W.backward(np.einsum("ijk, ijl -> kl", s.data[:-1], dLt_dft[1:]))
-
+    def no_recursion_null_grad(self):
+        firstguy=True
+        for attr in self.__dict__:
+            var = getattr(self, attr)
+            if hasattr(var, grad):
+                    var.grad=None
+            if hasattr(var, _ops):
+                    var._ops = []
+        
+        
     def backward_2(self, grad, seq_index=None):
         if self.U.constant and self.W.constant and self._input_seq.constant:
             return None
@@ -167,6 +176,10 @@ class OldRecurrentUnit(Operation):
         else:
             s_prev.grad = None
             s_prev.backward(np.dot(dLdo, self.W.data.T))
+
+
+
+
 
 
 

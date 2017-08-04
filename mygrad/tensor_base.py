@@ -141,7 +141,13 @@ class Tensor:
         self._ops = []
         if self._creator is not None:
             self._creator.null_gradients()
-
+    def no_recursion_null_grad(self):
+        self.grad=None
+        self._ops = []
+        if (self._creator is not None and hasattr(self._creator,no_recursion_null_grad())):
+            self._creator.no_recursion_null_grad()
+        
+        
     @property
     def scalar_only(self):
         """ Indicates whether or not `self.ndim` must be 0 in order to invoke `self.backprop()`.
